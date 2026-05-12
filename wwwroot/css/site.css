@@ -1,0 +1,1512 @@
+:root {
+    /* Cores principais consolidadas */
+    --azul-principal: #1A237E;
+    --azul-escuro: #161d6e;
+    --azul-medio: #3D4E7C;
+    --azul-claro: #6D81B8;
+    --azul-muito-claro: #B6C0DB;
+    --azul-claro-fundo: #e8f0ff;
+    /* Cores de estado */
+    --sucesso: #28a745;
+    --sucesso-escuro: #218838;
+    --aviso: #ffc107;
+    --aviso-escuro: #e0a800;
+    --perigo: #dc3545;
+    --perigo-escuro: #c82333;
+    --info: #17a2b8;
+    --info-escuro: #138496;
+    /* Cores neutras */
+    --branco: #ffffff;
+    --cinza-texto: #4b5563;
+    --cinza-claro: #7F8C8D;
+    --cinza-escuro: #2C3E50;
+    --fundo: #F8F9FA;
+    /* Layout */
+    --sidebar-width: 280px;
+    --transition-speed: 0.3s;
+    --sombra: rgba(0, 0, 0, 0.1);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, sans-serif;
+    color: var(--cinza-texto);
+    line-height: 1.5;
+    overflow-x: hidden;
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+}
+
+/* ===== ESTRUTURA PRINCIPAL ===== */
+.app-container {
+    display: flex;
+    min-height: 100vh;
+    background: var(--fundo);
+    position: relative;
+    width: 100%;
+}
+
+/* ===== SIDEBAR RESPONSIVO ===== */
+.sidebar {
+    width: var(--sidebar-width);
+    background: linear-gradient(180deg, var(--azul-principal), var(--azul-escuro));
+    color: var(--branco);
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    box-shadow: 2px 0 10px var(--sombra);
+    z-index: 1001;
+    transition: transform var(--transition-speed) ease-in-out;
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+}
+
+    .sidebar.collapsed {
+        transform: translateX(-100%);
+    }
+
+    .sidebar .logo {
+        padding: 25px 20px;
+        text-align: center;
+        background-color: var(--branco);
+        border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        min-height: 100px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all var(--transition-speed);
+        flex-shrink: 0;
+    }
+
+        .sidebar .logo img {
+            width: auto;
+            height: auto;
+            max-width: 180px;
+            max-height: 60px;
+            object-fit: contain;
+            transition: all var(--transition-speed);
+        }
+
+.sidebar-nav {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 20px 0;
+    -webkit-overflow-scrolling: touch;
+}
+
+.nav-menu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+}
+
+.nav-item {
+    position: relative;
+    margin-bottom: 2px;
+    width: 100%;
+}
+
+.nav-link {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    color: var(--branco);
+    text-decoration: none;
+    padding: 14px 20px;
+    transition: all var(--transition-speed) ease;
+    cursor: pointer;
+    border-left: 3px solid transparent;
+    gap: 12px;
+    min-height: 50px;
+    width: 100%;
+}
+
+    .nav-link:hover {
+        background: rgba(255, 255, 255, 0.15);
+        border-left-color: rgba(255, 255, 255, 0.5);
+    }
+
+    .nav-link i {
+        width: 20px;
+        text-align: center;
+        font-size: 18px;
+        flex-shrink: 0;
+    }
+
+.nav-text {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: opacity var(--transition-speed);
+    flex: 1;
+}
+
+/* ===== SUBMENUS ===== */
+.nav-item.has-submenu {
+    position: relative;
+}
+
+    .nav-item.has-submenu > .nav-link .submenu-toggle {
+        margin-left: auto;
+        transition: transform var(--transition-speed);
+        font-size: 12px;
+        width: 20px;
+        height: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+.submenu {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    background-color: rgba(0, 0, 0, 0.15);
+    margin-left: 15px;
+    border-left: 2px solid rgba(255, 255, 255, 0.15);
+    padding-left: 0;
+}
+
+.nav-item.has-submenu.active .submenu {
+    max-height: 500px;
+}
+
+.nav-item.has-submenu.active > .nav-link .submenu-toggle {
+    transform: rotate(180deg);
+}
+
+.submenu .nav-link {
+    padding-left: 55px;
+    font-size: 0.9em;
+    min-height: 44px;
+    padding-top: 12px;
+    padding-bottom: 12px;
+    opacity: 0.9;
+}
+
+    .submenu .nav-link:hover {
+        opacity: 1;
+        background-color: rgba(255, 255, 255, 0.08);
+    }
+
+/* HOVER apenas para desktop */
+@media (min-width: 992px) {
+    .sidebar:not(.collapsed) .nav-item.has-submenu:hover .submenu {
+        max-height: 500px;
+    }
+
+    .sidebar:not(.collapsed) .nav-item.has-submenu:hover > .nav-link .submenu-toggle {
+        transform: rotate(180deg);
+    }
+}
+
+/* Estados ativos */
+.nav-item.active > .nav-link {
+    background: rgba(255, 255, 255, 0.2);
+    border-left-color: var(--branco);
+}
+
+.submenu .nav-item.active > .nav-link {
+    background: rgba(255, 255, 255, 0.15);
+    border-left-color: rgba(255, 255, 255, 0.7);
+}
+
+/* ===== CONTEÚDO PRINCIPAL RESPONSIVO ===== */
+.main-content {
+    flex: 1;
+    margin-left: var(--sidebar-width);
+    display: flex;
+    flex-direction: column;
+    transition: margin-left var(--transition-speed) ease;
+    min-height: 100vh;
+    width: calc(100% - var(--sidebar-width));
+    position: relative;
+}
+
+.sidebar.collapsed + .main-content {
+    margin-left: 0;
+    width: 100%;
+}
+
+.main-header {
+    background: var(--branco);
+    border-bottom: 1px solid #dce3f0;
+    padding: 15px 25px;
+    box-shadow: 0 2px 5px var(--sombra);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.user-info {
+    font-size: 14px;
+    flex: 1;
+    min-width: 0;
+}
+
+.welcome, .last-access {
+    margin-bottom: 5px;
+}
+
+.content-wrapper {
+    flex: 1;
+    padding: 25px;
+    background-color: var(--fundo);
+    animation: fadeIn 0.5s ease-out;
+    width: 100%;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.main-footer {
+    background: var(--branco);
+    border-top: 1px solid #dce3f0;
+    padding: 15px 25px;
+    text-align: center;
+    color: #555;
+    box-shadow: 0 -1px 4px var(--sombra);
+    margin-top: auto;
+    width: 100%;
+}
+
+/* ===== BOTÃO HAMBURGUER RESPONSIVO ===== */
+.toggle-sidebar {
+    display: none;
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    background: var(--azul-principal);
+    color: var(--branco);
+    border: none;
+    width: 50px;
+    height: 50px;
+    border-radius: 10px;
+    z-index: 1100;
+    box-shadow: 0 3px 12px rgba(26, 35, 126, 0.4);
+    transition: all 0.3s;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    touch-action: manipulation;
+}
+
+    .toggle-sidebar:hover {
+        background: var(--azul-escuro);
+        transform: scale(1.05);
+    }
+
+    .toggle-sidebar i {
+        font-size: 20px;
+    }
+
+/* ===== OVERLAY MOBILE ===== */
+.mobile-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(2px);
+    z-index: 999;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+}
+
+    .mobile-overlay.active {
+        display: block;
+        opacity: 1;
+        pointer-events: auto;
+    }
+
+/* ===== CONTEÚDO RESPONSIVO ===== */
+
+/* Containers de páginas */
+.clients-container,
+.vendedores-container,
+.materials-container,
+.users-container,
+.configuracoes-container,
+.dashboard-container,
+.orcamentos-container,
+.contratos-container {
+    padding: 0;
+    animation: fadeIn 0.5s ease-out;
+    width: 100%;
+}
+
+/* Dashboard Header Responsivo */
+.dashboard-header {
+    background: linear-gradient(135deg, var(--azul-escuro), var(--azul-medio));
+    color: white;
+    padding: 2rem 0;
+    margin-bottom: 2rem;
+    border-radius: 0 0 15px 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    width: 100%;
+}
+
+    .dashboard-header h1 {
+        color: white;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        font-size: clamp(1.5rem, 4vw, 2.5rem);
+    }
+
+        .dashboard-header h1 i {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: clamp(1.5rem, 4vw, 2.5rem);
+        }
+
+    .dashboard-header .lead {
+        color: rgba(255, 255, 255, 0.8);
+        font-size: clamp(0.9rem, 2vw, 1.1rem);
+    }
+
+/* Cards Responsivos */
+.card {
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 1.5rem;
+    background: var(--branco);
+    transition: all var(--transition-speed);
+    overflow: hidden;
+    width: 100%;
+}
+
+.card-body {
+    padding: 1.5rem;
+    width: 100%;
+}
+
+.stat-card {
+    text-align: center;
+    padding: 1.5rem 1rem;
+    border-radius: 12px;
+    background: white;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: all var(--transition-speed);
+    border-left: 4px solid var(--azul-claro);
+    width: 100%;
+}
+
+.stat-number {
+    font-size: clamp(1.8rem, 5vw, 2.5rem);
+    font-weight: 700;
+    color: var(--azul-escuro);
+    margin-bottom: 0.5rem;
+    line-height: 1;
+    word-break: break-word;
+}
+
+.stat-label {
+    font-size: clamp(0.75rem, 2vw, 0.9rem);
+    color: var(--cinza-claro);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: 600;
+    word-break: break-word;
+}
+
+/* ===== TABELA 100% RESPONSIVA - MOSTRA TODOS OS REGISTROS ===== */
+.table-responsive {
+    width: 100%;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 1rem;
+    border: 1px solid #dee2e6;
+    background: white;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    display: block;
+}
+
+
+.dadosGridTabela {
+    width: 100%;
+    border-collapse: collapse;
+    border-spacing: 0;
+    margin: 0;
+    font-size: 0.9rem;
+    table-layout: auto;
+    min-width: 600px;
+}
+
+    .dadosGridTabela thead {
+        display: table-header-group;
+    }
+
+        .dadosGridTabela thead th {
+            background: linear-gradient(135deg, var(--azul-principal), var(--azul-escuro));
+            color: var(--branco);
+            font-weight: 600;
+            padding: 14px 12px;
+            border: none;
+            white-space: nowrap;
+            text-align: left;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+    .dadosGridTabela tbody {
+        display: table-row-group;
+    }
+
+        .dadosGridTabela tbody tr {
+            display: table-row;
+            transition: background-color 0.2s;
+        }
+
+            .dadosGridTabela tbody tr:nth-child(even) {
+                background-color: #f8f9fa;
+            }
+
+            .dadosGridTabela tbody tr:hover {
+                background-color: #e8f0ff;
+            }
+
+        .dadosGridTabela tbody td {
+            padding: 14px 12px;
+            vertical-align: middle;
+            border-bottom: 1px solid #e9ecef;
+            word-break: break-word;
+            overflow-wrap: break-word;
+            white-space: normal;
+            max-width: 300px;
+        }
+
+    .dadosGridTabela .btn-sm {
+        width: 36px;
+        height: 36px;
+        padding: 0;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 2px;
+        border-radius: 6px;
+        font-size: 0.85rem;
+        flex-shrink: 0;
+    }
+
+    .dadosGridTabela .btn-group {
+        display: flex;
+        gap: 0.25rem;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+    }
+
+/* Botões Responsivos */
+.btn {
+    border-radius: 8px;
+    font-weight: 600;
+    transition: all var(--transition-speed);
+    border: none;
+    padding: 0.75rem 1.5rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    min-height: 44px;
+    white-space: nowrap;
+    touch-action: manipulation;
+    cursor: pointer;
+    text-align: center;
+}
+
+.botaoAcesso, .login-btn {
+    background: linear-gradient(135deg, var(--azul-principal), var(--azul-escuro));
+    color: var(--branco);
+    border: none;
+    border-radius: 8px;
+    padding: 0.75rem 1.5rem;
+    font-weight: 600;
+    transition: all var(--transition-speed);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    min-height: 44px;
+    width: 100%;
+    touch-action: manipulation;
+}
+
+/* Formulários Responsivos */
+.form-control {
+    border: 2px solid var(--azul-muito-claro);
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    transition: all var(--transition-speed);
+    font-size: 16px;
+    width: 100%;
+    max-width: 100%;
+}
+
+/* Modal Responsivo */
+.modal-dialog {
+    margin: 0.5rem;
+    max-width: calc(100% - 1rem);
+    width: auto;
+}
+
+.modal-content {
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    width: 100%;
+}
+
+/* ===== ANIMAÇÕES ===== */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-5px);
+        max-height: 0;
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+        max-height: 500px;
+    }
+}
+
+/* ===== SCROLLBAR PERSONALIZADA ===== */
+.sidebar-nav::-webkit-scrollbar,
+.modal-body::-webkit-scrollbar,
+.content-wrapper::-webkit-scrollbar {
+    width: 6px;
+}
+
+.sidebar-nav::-webkit-scrollbar-track,
+.modal-body::-webkit-scrollbar-track,
+.content-wrapper::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.sidebar-nav::-webkit-scrollbar-thumb,
+.modal-body::-webkit-scrollbar-thumb,
+.content-wrapper::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 3px;
+}
+
+    .sidebar-nav::-webkit-scrollbar-thumb:hover,
+    .modal-body::-webkit-scrollbar-thumb:hover,
+    .content-wrapper::-webkit-scrollbar-thumb:hover {
+        background: rgba(255, 255, 255, 0.5);
+    }
+
+/* Suporte para outros navegadores */
+.sidebar-nav,
+.modal-body,
+.content-wrapper {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.3) rgba(255, 255, 255, 0.1);
+}
+
+/* ===== RESPONSIVIDADE POR BREAKPOINTS ===== */
+
+/* Desktop Grande (acima de 1200px) */
+@media (min-width: 1200px) {
+    .dadosGridTabela {
+        font-size: 0.95rem;
+    }
+
+        .dadosGridTabela thead th,
+        .dadosGridTabela tbody td {
+            padding: 16px 14px;
+        }
+}
+
+/* Tablet Landscape (992px - 1199px) */
+@media (min-width: 992px) and (max-width: 1199px) {
+    .dadosGridTabela {
+        font-size: 0.9rem;
+    }
+
+        .dadosGridTabela thead th,
+        .dadosGridTabela tbody td {
+            padding: 12px 10px;
+        }
+}
+
+/* Tablet e Desktop Pequeno (768px - 991px) */
+@media (max-width: 991px) {
+    .sidebar {
+        transform: translateX(-100%);
+        width: 320px;
+    }
+
+        .sidebar:not(.collapsed) {
+            transform: translateX(0);
+        }
+
+        .sidebar .logo {
+            padding: 30px 20px;
+            min-height: 120px;
+        }
+
+            .sidebar .logo img {
+                max-width: 200px;
+                max-height: 70px;
+            }
+
+    .toggle-sidebar {
+        display: flex;
+    }
+
+    .main-content {
+        margin-left: 0;
+        width: 100%;
+    }
+
+    .main-header {
+        padding: 15px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .user-info {
+        width: 100%;
+        margin-top: 0;
+    }
+
+    .content-wrapper {
+        padding: 20px;
+    }
+
+    .card-body {
+        padding: 1.25rem;
+    }
+
+    .dashboard-header {
+        padding: 1.5rem 0;
+        margin-bottom: 1.5rem;
+        border-radius: 0 0 10px 10px;
+    }
+
+    .stat-card {
+        padding: 1.25rem 0.75rem;
+    }
+
+    .nav-link {
+        padding: 12px 15px;
+    }
+
+    .submenu .nav-link {
+        padding-left: 50px;
+    }
+
+    /* Tabela em tablets */
+    .table-responsive {
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+    .dadosGridTabela {
+        font-size: 0.85rem;
+        min-width: 700px;
+    }
+
+        .dadosGridTabela thead th,
+        .dadosGridTabela tbody td {
+            padding: 12px 8px;
+        }
+
+        .dadosGridTabela .btn-sm {
+            width: 34px;
+            height: 34px;
+            margin: 1px;
+        }
+}
+
+/* Mobile (576px - 767px) */
+@media (max-width: 767px) {
+    /* Layout Geral */
+    .sidebar {
+        width: 300px;
+    }
+
+        .sidebar .logo {
+            padding: 25px 15px;
+            min-height: 110px;
+        }
+
+            .sidebar .logo img {
+                max-width: 180px;
+                max-height: 65px;
+            }
+
+    .toggle-sidebar {
+        width: 48px;
+        height: 48px;
+        top: 12px;
+        left: 12px;
+    }
+
+    .main-header {
+        padding: 12px 15px;
+        gap: 8px;
+    }
+
+    .content-wrapper {
+        padding: 15px;
+    }
+
+    .card-body {
+        padding: 1rem;
+    }
+
+    .dashboard-header {
+        padding: 1.25rem 0;
+        margin-bottom: 1.25rem;
+    }
+
+        .dashboard-header h1 {
+            font-size: 1.5rem;
+        }
+
+    .stat-card {
+        padding: 1rem 0.5rem;
+        margin-bottom: 1rem;
+    }
+
+    .stat-number {
+        font-size: 1.8rem;
+    }
+
+    .btn {
+        padding: 0.6rem 1.25rem;
+        font-size: 0.9rem;
+        min-height: 42px;
+        width: 100%;
+    }
+
+    .botaoAcesso, .login-btn {
+        padding: 0.6rem 1.25rem;
+    }
+
+    .modal-dialog {
+        margin: 0.25rem;
+        max-width: calc(100% - 0.5rem);
+    }
+
+    .modal-body {
+        padding: 1rem;
+    }
+
+    .form-section {
+        padding: 1rem;
+        margin-bottom: 1rem;
+    }
+
+    .nav-link {
+        padding: 10px 15px;
+        min-height: 46px;
+    }
+
+        .nav-link i {
+            font-size: 16px;
+        }
+
+    .submenu .nav-link {
+        padding-left: 45px;
+        min-height: 42px;
+    }
+
+    /* Tabela Mobile - Transformação em Cards */
+    .table-responsive {
+        border: 0;
+        box-shadow: none;
+        background: transparent;
+        overflow-x: visible;
+        display: block;
+        min-width: 100%;
+    }
+
+    .dadosGridTabela {
+        display: block;
+        min-width: 100%;
+        width: 100%;
+        font-size: 0.85rem;
+    }
+
+        .dadosGridTabela thead {
+            display: none;
+        }
+
+        .dadosGridTabela tbody {
+            display: block;
+            width: 100%;
+        }
+
+            .dadosGridTabela tbody tr {
+                display: block;
+                margin-bottom: 1rem;
+                border: 1px solid #dee2e6;
+                border-radius: 8px;
+                background-color: #fff;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                padding: 0;
+                overflow: hidden;
+                width: 100%;
+                break-inside: avoid;
+                page-break-inside: avoid;
+            }
+
+            .dadosGridTabela tbody td {
+                display: flex;
+                justify-content: space-between;
+                align-items: flex-start;
+                text-align: right;
+                padding: 12px 15px;
+                border-bottom: 1px solid #f0f0f0;
+                position: relative;
+                min-height: 44px;
+                width: 100%;
+                box-sizing: border-box;
+                max-width: 100%;
+                word-break: break-word;
+                white-space: normal;
+            }
+
+                .dadosGridTabela tbody td:last-child {
+                    border-bottom: none;
+                    justify-content: center;
+                    padding: 15px;
+                    background-color: #f8f9fa;
+                    min-height: 60px;
+                }
+
+                .dadosGridTabela tbody td:before {
+                    content: attr(data-label);
+                    font-weight: 600;
+                    text-align: left;
+                    color: #1A237E;
+                    flex: 0 0 120px;
+                    margin-right: 1rem;
+                    font-size: 0.85rem;
+                    align-self: flex-start;
+                }
+
+                /* Ações específicas para mobile */
+                .dadosGridTabela tbody td[data-label="Ações"]:before {
+                    display: none;
+                }
+
+                .dadosGridTabela tbody td .btn-group {
+                    display: flex;
+                    gap: 0.5rem;
+                    justify-content: center;
+                    width: 100%;
+                    flex-wrap: wrap;
+                }
+
+            /* Remove hover em mobile */
+            .dadosGridTabela tbody tr:hover {
+                background-color: #fff;
+            }
+}
+
+/* Mobile Pequeno (até 575px) */
+@media (max-width: 575px) {
+    .sidebar {
+        width: 280px;
+        max-width: 90vw;
+    }
+
+        .sidebar .logo {
+            padding: 20px 15px;
+            min-height: 100px;
+        }
+
+            .sidebar .logo img {
+                max-width: 160px;
+                max-height: 60px;
+            }
+
+    .toggle-sidebar {
+        width: 44px;
+        height: 44px;
+        top: 10px;
+        left: 10px;
+    }
+
+    .content-wrapper {
+        padding: 12px;
+    }
+
+    .main-header {
+        padding: 10px 12px;
+    }
+
+    .card-body {
+        padding: 0.875rem;
+    }
+
+    .btn {
+        padding: 0.5rem 1rem;
+        font-size: 0.85rem;
+        min-height: 40px;
+    }
+
+    .botaoAcesso, .login-btn {
+        padding: 0.5rem 1rem;
+        font-size: 0.9rem;
+    }
+
+    .form-control {
+        padding: 0.625rem 0.875rem;
+        font-size: 16px;
+    }
+
+    .nav-link {
+        padding: 10px 12px;
+    }
+
+    .nav-text {
+        font-size: 0.9rem;
+    }
+
+    .submenu .nav-link {
+        padding-left: 40px;
+        font-size: 0.85em;
+    }
+
+    .user-info {
+        font-size: 0.875rem;
+    }
+
+    .main-footer {
+        padding: 12px 15px;
+        font-size: 0.875rem;
+    }
+
+    /* Tabela Mobile Pequena */
+    .dadosGridTabela {
+        font-size: 0.8rem;
+    }
+
+        .dadosGridTabela tbody td:before {
+            flex: 0 0 90px;
+            font-size: 0.8rem;
+        }
+
+        .dadosGridTabela tbody td {
+            font-size: 0.85rem;
+            padding: 10px 12px;
+            min-height: 42px;
+            flex-direction: column;
+            align-items: flex-start;
+            text-align: left;
+        }
+
+            .dadosGridTabela tbody td:before {
+                margin-right: 0;
+                margin-bottom: 5px;
+                width: 100%;
+                flex: 0 0 auto;
+            }
+
+            .dadosGridTabela tbody td:last-child {
+                padding: 12px;
+                align-items: center;
+            }
+
+        .dadosGridTabela .btn-group .btn {
+            width: 36px;
+            height: 36px;
+            font-size: 0.8rem;
+            margin: 2px;
+        }
+}
+
+/* Orientação Landscape no Mobile */
+@media (max-height: 600px) and (orientation: landscape) {
+    .sidebar {
+        overflow-y: auto;
+    }
+
+    .sidebar-nav {
+        padding: 10px 0;
+    }
+
+    .nav-link {
+        padding: 10px 15px;
+        min-height: 44px;
+    }
+
+    .submenu .nav-link {
+        padding: 8px 15px 8px 40px;
+        min-height: 40px;
+    }
+
+    .logo {
+        padding: 15px;
+        min-height: 60px;
+    }
+
+        .logo img {
+            max-height: 100%;
+        }
+
+    /* Tabela Landscape */
+    .dadosGridTabela tbody td {
+        padding: 8px 10px;
+        min-height: 38px;
+    }
+}
+
+/* High DPI Displays */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    .stat-card,
+    .card,
+    .btn,
+    .form-control {
+        border-width: 1px;
+    }
+}
+
+/* Dark Mode Preference */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --fundo: #121212;
+        --branco: #e0e0e0;
+        --cinza-texto: #b0b0b0;
+        --cinza-escuro: #e0e0e0;
+    }
+
+    .card,
+    .stat-card,
+    .modal-content {
+        background: #1e1e1e;
+        color: var(--branco);
+        border-color: #333;
+    }
+
+    .form-control {
+        background: #2d2d2d;
+        border-color: #444;
+        color: var(--branco);
+    }
+
+    .table-responsive {
+        background-color: #1e1e1e;
+        border-color: #333;
+    }
+
+    .dadosGridTabela tbody tr:nth-child(even) {
+        background-color: #2d2d2d;
+    }
+
+    .dadosGridTabela tbody tr:hover {
+        background-color: #3d3d3d;
+    }
+
+    .dadosGridTabela thead th {
+        background: linear-gradient(135deg, #0d1459, #0a1048);
+    }
+
+    .dadosGridTabela tbody td:before {
+        color: var(--azul-claro);
+    }
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+
+    .sidebar,
+    .submenu,
+    .nav-link,
+    .card,
+    .btn {
+        transition: none;
+    }
+}
+
+/* Touch Device Optimizations */
+@media (hover: none) and (pointer: coarse) {
+    .nav-link,
+    .btn {
+        min-height: 48px;
+        padding: 14px 16px;
+    }
+
+    .form-control {
+        font-size: 16px;
+        padding: 12px;
+        min-height: 44px;
+    }
+
+    /* Aumentar área de toque */
+    .btn-sm {
+        min-height: 44px;
+        min-width: 44px;
+        padding: 10px;
+    }
+
+    .nav-link i {
+        font-size: 20px;
+    }
+
+    /* Melhorias para toque na tabela */
+    .dadosGridTabela tbody td {
+        padding: 16px 12px;
+        min-height: 56px;
+    }
+
+    .dadosGridTabela .btn-group .btn {
+        min-width: 44px;
+        min-height: 44px;
+        margin: 4px;
+    }
+
+    .toggle-sidebar {
+        min-width: 48px;
+        min-height: 48px;
+    }
+}
+
+/* Impressão */
+@media print {
+    .sidebar,
+    .main-header,
+    .main-footer,
+    .toggle-sidebar,
+    .mobile-overlay,
+    .btn {
+        display: none !important;
+    }
+
+    .main-content {
+        margin-left: 0 !important;
+        width: 100% !important;
+    }
+
+    .content-wrapper {
+        padding: 0 !important;
+        overflow: visible !important;
+    }
+
+    .card {
+        box-shadow: none !important;
+        border: 1px solid #ddd !important;
+        break-inside: avoid;
+        page-break-inside: avoid;
+    }
+
+    .table-responsive {
+        box-shadow: none !important;
+        border: 1px solid #ddd !important;
+        overflow: visible !important;
+        break-inside: avoid;
+        page-break-inside: avoid;
+    }
+
+    .dadosGridTabela {
+        page-break-inside: auto;
+        break-inside: auto;
+        font-size: 10pt !important;
+    }
+
+        .dadosGridTabela thead {
+            display: table-header-group !important;
+        }
+
+        .dadosGridTabela tbody tr {
+            page-break-inside: avoid;
+            break-inside: avoid;
+            display: table-row !important;
+        }
+
+        .dadosGridTabela tbody td {
+            display: table-cell !important;
+            border: 1px solid #ddd !important;
+            padding: 6px 8px !important;
+        }
+
+            .dadosGridTabela tbody td:before {
+                display: none !important;
+            }
+}
+
+/* ============================================
+   ESTADO QUANDO NÃO HÁ DADOS
+============================================ */
+.dadosGridTabela tbody:empty:after {
+    content: "Nenhum registro encontrado";
+    display: table-row;
+    height: 100px;
+    text-align: center;
+    vertical-align: middle;
+    color: #6c757d;
+    font-style: italic;
+    padding: 2rem;
+    width: 100%;
+    font-size: 1rem;
+}
+
+.no-data-row {
+    text-align: center;
+    padding: 2rem !important;
+    color: #6c757d;
+    font-style: italic;
+    background-color: #f8f9fa;
+    display: table-row !important;
+}
+
+/* ============================================
+   MODAL
+============================================ */
+.modal-xl-custom {
+    max-width: 95%;
+}
+
+.modal-header {
+    background: linear-gradient(135deg, #1A237E, #161d6e);
+    color: white;
+    border-radius: 12px 12px 0 0;
+    padding: 1.5rem;
+}
+
+    .modal-header .btn-close {
+        filter: invert(1);
+        opacity: 0.8;
+    }
+
+        .modal-header .btn-close:hover {
+            opacity: 1;
+        }
+
+/* ============================================
+   FORMULÁRIOS
+============================================ */
+.form-section {
+    background: #f8f9fa;
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+    border-left: 4px solid #1A237E;
+    transition: all 0.3s ease;
+    width: 100%;
+}
+
+    .form-section:hover {
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-section h6 {
+        color: #1A237E;
+        margin-bottom: 1rem;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        word-break: break-word;
+    }
+
+        .form-section h6 i {
+            margin-right: 0.5rem;
+            font-size: 1rem;
+        }
+
+/* ============================================
+   GARANTIR COMPATIBILIDADE TOTAL
+============================================ */
+/* Remover qualquer comportamento que quebre layout */
+* {
+    -webkit-tap-highlight-color: transparent;
+}
+
+img, table, tr, td, th {
+    max-width: 100%;
+}
+
+/* Suporte para IE11 */
+@media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+    .app-container {
+        display: block;
+    }
+
+    .main-content {
+        display: block;
+    }
+
+    .dadosGridTabela {
+        table-layout: fixed;
+        width: 100%;
+    }
+}
+
+/* Garantir que todos os elementos sejam visíveis */
+.dadosGridTabela tbody tr {
+    visibility: visible !important;
+    opacity: 1 !important;
+    height: auto !important;
+}
+
+/* Evitar quebra de layout em telas muito pequenas */
+@media (max-width: 320px) {
+    html {
+        font-size: 14px;
+    }
+
+    .content-wrapper {
+        padding: 8px;
+    }
+
+    .dadosGridTabela tbody td {
+        padding: 8px !important;
+    }
+
+        .dadosGridTabela tbody td:before {
+            flex: 0 0 80px !important;
+            font-size: 0.75rem !important;
+        }
+}
+
+.fas{
+    padding-right: 25px;
+}
+
+.centralizaQtde{
+    padding-left: 25%;
+}
+
+.botaoItemDados{
+     padding-left: 60%;
+}
+
+.estiloBotao{
+    margin-top: 15%;
+}
+
+.estiloBotao2{
+    margin-top: 18%;
+}
+
+/* ===== COMPATIBILIDADE LAYOUT MVC ===== */
+
+.sidebar.open {
+    transform: translateX(0) !important;
+}
+
+@media (max-width: 991px) {
+    .sidebar {
+        transform: translateX(-100%);
+    }
+
+        .sidebar.open {
+            transform: translateX(0) !important;
+        }
+}
+
+.logo-img {
+    width: auto;
+    height: auto;
+    max-width: 180px;
+    max-height: 60px;
+    object-fit: contain;
+}
+
+.submenu.open {
+    max-height: 500px;
+}
+
+    .submenu.open + .submenu-toggle,
+    .nav-item.has-submenu .submenu.open {
+        animation: slideDown 0.3s ease;
+    }
+
+.main-header > div {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+}
+
+.botaoAcesso {
+    width: auto !important;
+    min-width: 48px;
+}
+
+.nav-link {
+    cursor: pointer;
+}
+
+body {
+    margin: 0 !important;
+}
+
+.cke_editable figure.image {
+    display: inline-block;
+    position: relative;
+    max-width: 100%;
+    margin: 10px 0;
+}
+
+    .cke_editable figure.image img {
+        display: block;
+        max-width: 100%;
+        height: auto;
+    }
+
+/* Handles de resize */
+.cke_widget_wrapper:hover {
+    outline: 2px dashed #2196f3;
+}
+
+.cke_widget_drag_handler_container {
+    display: block !important;
+}
+
+.cke_widget_element {
+    cursor: move;
+}
