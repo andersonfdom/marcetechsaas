@@ -1510,3 +1510,7 @@ body {
 .cke_widget_element {
     cursor: move;
 }
+
+.fas {
+    padding-left: 10px;
+}
