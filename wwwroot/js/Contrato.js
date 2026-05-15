@@ -52,8 +52,8 @@ function gravarDadosContrato() {
         pontuacaoArchiContrato: document.getElementById('pontuacaoarchicontrato')?.checked || false,
 
         chavePixContrato: document.getElementById('chavepixcontrato')?.value || '',
-        prazosContrato: document.getElementById('prazoscontrato')?.value || '',
-        descricaoFormaPagamentoContrato: document.getElementById('descricaoformapagamentocontrato')?.value || ''
+        prazosContrato: tinymce.get('prazoscontrato').getContent(),
+        descricaoFormaPagamentoContrato: tinymce.get('descricaoformapagamentocontrato').getContent()
     };
 
     var xmlhttp = new XMLHttpRequest();
@@ -116,7 +116,7 @@ function CarregarDadosContrato(idOrcamento) {
             var retornoApi = JSON.parse(xmlhttp.responseText);
 
             console.log(retornoApi);
-            atribuirElementoHTML('view-marceneiro-nome', retornoApi.nomeMarceneiro.toUpperCase());
+            atribuirElementoHTML('view-marceneiro-nome', retornoApi.nomeMarceneiro);
 
             if (retornoApi.tipoPessoaMarceneiro === 1) {
                 atribuirElementoHTML('view-marceneiro-label-doc',"CNPJ");
@@ -135,14 +135,21 @@ function CarregarDadosContrato(idOrcamento) {
             };
 
 
+            //Contratada
             atribuirElementoHTML('view-marceneiro-doc', retornoApi.cpfCnpjMarceneiro);
             document.getElementById("view-logo").src = "data:image/jpeg;base64," + retornoApi.logo;
             atribuirElementoHTML('view-marceneiro-email', retornoApi.emailMarceneiro);
             atribuirElementoHTML('view-marceneiro-tel', retornoApi.telefoneMarceneiro);
             atribuirElementoHTML('view-marceneiro-endereco', "com sede na " + retornoApi.enderecoCompletoMarceneiro + "," + retornoApi.cepMarceneiro);
             atribuirElementoHTML('view-marceneiro-endereco2', "Telefone: " + retornoApi.telefoneMarceneiro + ", Estado do " + estadosExtenso[retornoApi.estadoMarceneiro] || retornoApi.estadoMarceneiro || '');
-            //enderecoCompletoMarceneiro
 
+            //Contratante
+            document.getElementById("view-cliente-nome").textContent = retornoApi.nomeCliente;
+            document.getElementById("view-cliente-doc").textContent = retornoApi.cpfCnpjCliente;
+            document.getElementById("view-cliente-endereco").textContent = retornoApi.enderecoCliente;
+            atribuirElementoHTML('dosprazos', retornoApi.prazoEntrega);
+
+            atribuirElementoHTML('cidadeComarca', retornoApi.cidadeComarca + "/" + retornoApi.estadoComarca);
         }
     };
 
@@ -152,33 +159,41 @@ function CarregarDadosContrato(idOrcamento) {
 // Inicialização
 window.onload = function () {
     preencherDataAtual();
-    var idContrato = document.getElementById("idContrato").value;
+    initEditorsContrato();
+
     var idOrcamentoContrato = document.getElementById('idOrcamentoContrato')?.value;
 
-    if (idContrato === '0' ||
-        idContrato === 0) {
+    CarregarDadosOrcamentoContrato(idOrcamentoContrato);
+
+    var idContrato = document.getElementById("idContrato").value;
+
+    if (idContrato === 0 || idContrato === '0') {
         abrirModal();
-
-        var xmlhttp = new XMLHttpRequest();
-        xmlhttp.open("POST", "/CarregarDadosOrcamentoContrato?idOrcamento=" + idOrcamentoContrato, false);
-        xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-
-        xmlhttp.onreadystatechange = function () {
-            if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
-                var retornoApi = JSON.parse(xmlhttp.responseText);
-
-                atribuirCampo('nomeclientecontrato', retornoApi.nomeclientecontrato); 
-                atribuirCampo('telefoneclientecontrato', retornoApi.telefoneclientecontrato); 
-                atribuirCampo('arquitetocontrato', retornoApi.arquitetocontrato);
-                atribuirCampo('valorrtcontrato', retornoApi.valorrtcontrato);
-            }
-        };
-
-        xmlhttp.send();
     } else {
         CarregarDadosContrato(idOrcamentoContrato);
     }
 };
+
+function CarregarDadosOrcamentoContrato(idOrcamentoContrato) {
+
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.open("POST", "/CarregarDadosOrcamentoContrato?idOrcamento=" + idOrcamentoContrato, false);
+    xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+
+    xmlhttp.onreadystatechange = function () {
+        if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
+            var retornoApi = JSON.parse(xmlhttp.responseText);
+
+            atribuirCampo('nomeclientecontrato', retornoApi.nomeclientecontrato);
+            atribuirCampo('telefoneclientecontrato', retornoApi.telefoneclientecontrato);
+            atribuirCampo('arquitetocontrato', retornoApi.arquitetocontrato);
+            atribuirCampo('valorrtcontrato', retornoApi.valorrtcontrato);
+            atribuirCampo('idContrato', retornoApi.idcontrato);
+        }
+    };
+
+    xmlhttp.send();
+}
 
 function atribuirCampo(campo,valor) {
     document.getElementById(campo).value = valor;
@@ -190,4 +205,21 @@ function atribuirElementoHTML(campo, valor) {
 
 function voltar() {
     window.location.href = "/Orcamentos/Visualizar?id=" + document.getElementById('idOrcamentoContrato')?.value;
+}
+
+function initEditorsContrato() {
+    tinymce.init({
+        selector: '#prazoscontrato, #descricaoformapagamentocontrato',
+        height: 250,
+        menubar: false,
+        language: 'pt_BR',
+        plugins: 'lists link image table code wordcount',
+        toolbar: 'undo redo | blocks | bold italic underline forecolor | alignleft aligncenter alignright | bullist numlist | table image code removeformat',
+        branding: false,
+        promotion: false,
+        setup: function (editor) {
+            editor.on('init', function () {
+            });
+        }
+    });
 }
