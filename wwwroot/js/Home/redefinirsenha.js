@@ -191,7 +191,7 @@ confirmarInput.addEventListener('input', () => {
 });
 btnRedefinir.addEventListener('click', handleRedefinir);
 btnVoltar.addEventListener('click', () => {
-    window.location.href = '/Login';
+    window.location.href = '/Home/Login';
 });
 
 // Inicialização
