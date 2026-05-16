@@ -3,7 +3,7 @@ const idMarceneiro = $('#IdMarceneiro').val();
 let ambientes = [];
 
 // ===== INICIALIZAÇÃO =====
-$(document).ready(function () {
+document.addEventListener('DOMContentLoaded', function () {
     carregarAmbientes();
 });
 
@@ -159,7 +159,7 @@ function recarregarLista() {
 }
 
 // Verificar se veio parâmetro de recarregamento na URL
-$(document).ready(function () {
+document.addEventListener('DOMContentLoaded', function () {
     const urlParams = new URLSearchParams(window.location.search);
     if (urlParams.get('reload') === 'true') {
         carregarAmbientes();

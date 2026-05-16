@@ -314,6 +314,6 @@ function confirmarCancelamento() {
 }
 
 // Remover o botão cancelar original e usar o novo
-$(document).ready(function () {
+document.addEventListener('DOMContentLoaded', function () {
     // O botão cancelar já foi substituído no HTML
 });

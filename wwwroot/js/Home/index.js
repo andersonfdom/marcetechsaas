@@ -1,5 +1,5 @@
 ﻿
-$(document).ready(function () {
+document.addEventListener('DOMContentLoaded', function () {
     const idMarceneiro = $('#IdMarceneiro').val();
 
     if (idMarceneiro) {

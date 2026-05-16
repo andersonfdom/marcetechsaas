@@ -2,7 +2,7 @@
 let clientes = [];
 let modalInstance = null;
 
-$(document).ready(function () {
+document.addEventListener('DOMContentLoaded', function () {
     modalInstance = new bootstrap.Modal(document.getElementById('CadCliente'));
     carregarLista();
 });

@@ -3,7 +3,7 @@ const idMarceneiro = $('#IdMarceneiro').val();
 let specsVinculadas = [];
 
 // ===== INICIALIZAÇÃO =====
-$(document).ready(function () {
+document.addEventListener('DOMContentLoaded', function () {
     const params = new URLSearchParams(window.location.search);
     const idUrl = params.get('id');
 

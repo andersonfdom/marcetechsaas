@@ -2,7 +2,7 @@
 const idMarceneiro = $('#IdMarceneiro').val();
 let itensDaCategoria = [];
 
-$(document).ready(function () {
+document.addEventListener('DOMContentLoaded', function () {
     const urlParams = new URLSearchParams(window.location.search);
     const id = urlParams.get('id');
     if (id && id !== '0') {

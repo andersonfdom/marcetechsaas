@@ -3,7 +3,7 @@ const idMarceneiro = $('#IdMarceneiro').val();
 let lojas = [];
 
 // ===== INICIALIZAÇÃO =====
-$(document).ready(function () {
+document.addEventListener('DOMContentLoaded', function () {
     carregarLojas();
 });
 

@@ -5,7 +5,7 @@ let lojas = [];
 let modalInstance = null;
 
 // ===== INICIALIZAÇÃO =====
-$(document).ready(function () {
+document.addEventListener('DOMContentLoaded', function () {
     modalInstance = new bootstrap.Modal(document.getElementById('CadVendedor'));
     carregarVendedores();
     carregarLojas();

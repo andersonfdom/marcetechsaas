@@ -2,7 +2,7 @@
 const idMarceneiro = $('#IdMarceneiro').val();
 
 // ===== INICIALIZAÇÃO =====
-$(document).ready(function () {
+document.addEventListener('DOMContentLoaded', function () {
     // Verifica se há ID na URL para edição
     const params = new URLSearchParams(window.location.search);
     const idUrl = params.get('id');
