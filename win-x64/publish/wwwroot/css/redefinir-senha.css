@@ -1,0 +1,180 @@
+/* Variáveis baseadas no seu sistema original */
+:root {
+    --primary-color: #1A237E;
+    --primary-dark: #161d6e;
+    --primary-light: #534bae;
+    --success-color: #28a745;
+    --danger-color: #dc3545;
+    --warning-color: #ffc107;
+    --info-color: #17a2b8;
+    --transition-speed: 0.3s;
+}
+
+.login-body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark));
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+}
+
+.login-container {
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    padding: 3rem;
+    width: 100%;
+    max-width: 450px;
+    text-align: center;
+    animation: fadeInUp 0.6s ease-out;
+    position: relative;
+    overflow: hidden;
+}
+
+.login-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+}
+
+.logo {
+    max-width: 180px;
+    height: auto;
+    margin-bottom: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(26, 35, 126, 0.2);
+}
+
+h2 {
+    color: var(--primary-color);
+    font-weight: 700;
+    margin-bottom: 2rem;
+    font-size: 1.8rem;
+    position: relative;
+}
+
+.form-login {
+    width: 100%;
+    padding: 1rem 1.5rem;
+    border: 2px solid #e9ecef;
+    border-radius: 12px;
+    font-size: 1rem;
+    transition: all var(--transition-speed);
+    background: #f8f9fa;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+}
+
+.form-login:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    background: white;
+    box-shadow: 0 0 0 3px rgba(26, 35, 126, 0.1);
+}
+
+/* Força da Senha */
+.password-strength {
+    height: 4px;
+    background: #e9ecef;
+    border-radius: 2px;
+    margin-top: 5px;
+    overflow: hidden;
+}
+
+.strength-bar {
+    height: 100%;
+    width: 0%;
+    transition: all 0.3s;
+}
+
+.strength-weak { background: var(--danger-color); }
+.strength-medium { background: var(--warning-color); }
+.strength-strong { background: var(--success-color); }
+.strength-very-strong { background: var(--success-color); }
+
+.strength-text {
+    font-size: 0.8rem;
+    margin-top: 5px;
+    font-weight: 600;
+    text-align: right;
+}
+
+.strength-weak-text { color: var(--danger-color); }
+.strength-medium-text { color: var(--warning-color); }
+.strength-strong-text { color: var(--success-color); }
+.strength-very-strong-text { color: var(--success-color); }
+
+/* Requisitos */
+.password-requirements {
+    background: #f8f9fa;
+    border-radius: 8px;
+    padding: 1rem;
+    margin: 1.5rem 0;
+    text-align: left;
+    border-left: 4px solid var(--info-color);
+}
+
+.requirement {
+    display: flex;
+    align-items: center;
+    font-size: 0.85rem;
+    margin-bottom: 5px;
+}
+
+.requirement i { margin-right: 10px; }
+.requirement.valid { color: var(--success-color); }
+.requirement.invalid { color: #6c757d; }
+
+.login-btn {
+    width: 100%;
+    background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+    color: white;
+    border: none;
+    padding: 1rem;
+    border-radius: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: 0.3s;
+}
+
+.login-btn:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+}
+
+.back-link {
+    display: inline-block;
+    margin-top: 1.5rem;
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+/* Animações */
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.loading {
+    width: 18px;
+    height: 18px;
+    border: 2px solid rgba(255,255,255,0.3);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
